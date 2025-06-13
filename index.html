@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para minha querida Day ❤️</title>
+    <title>Para o Amor da Minha Vida ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Mulish:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Pacifico&family=Mulish:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS com todas as correções */
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        body {
             font-family: 'Mulish', sans-serif;
             background: linear-gradient(135deg, #ffdde1, #ee9ca7);
             color: #4f4f4f;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -64,46 +68,25 @@
             z-index: 2;
         }
 
-        .hidden {
-            display: none !important;
-        }
-        
-        .fading-out {
-            opacity: 0;
-            transform: scale(0.9);
-        }
+        .hidden { display: none !important; }
+        .fading-out { opacity: 0; transform: scale(0.9); }
 
         .header img {
-            width: 130px; /* Tamanho corrigido */
-            height: 130px; /* Tamanho corrigido */
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             border: 5px solid #fff;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            object-fit: contain; /* Correção para não cortar */
+            object-fit: contain;
             background-color: #fff;
             margin-bottom: 20px;
         }
 
-        h1, h2 {
-            font-family: 'Pacifico', cursive;
-            color: #d6336c;
-        }
-
+        h1, h2 { font-family: 'Pacifico', cursive; color: #d6336c; }
         h1 { font-size: 2.5em; margin-bottom: 20px; }
         h2 { font-size: 1.8em; margin-top: 30px; margin-bottom: 15px; }
         p { line-height: 1.6; font-size: 1.1em; margin-bottom: 20px; }
         
-        #nervous-message {
-            color: #d6336c;
-            font-style: italic;
-            min-height: 1.5em; /* CORREÇÃO: Permite que o texto cresça */
-            transition: opacity 0.5s;
-            opacity: 0; /* Começa invisível */
-        }
-        #nervous-message.visible {
-            opacity: 1; /* Fica visível com a classe */
-        }
-
         button {
             font-family: 'Mulish', sans-serif;
             font-weight: 700;
@@ -114,25 +97,38 @@
             padding: 15px 30px;
             border-radius: 50px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: all 0.3s;
         }
-
-        button:hover {
-            background-color: #a61e4d;
-            transform: translateY(-3px);
-        }
+        button:hover { background-color: #a61e4d; transform: translateY(-3px); }
         
         .footer { margin-top: 40px; font-size: 1.1em; color: #777; }
         .footer strong { color: #d6336c; }
-        #back-button { margin-top: 30px; }
+        
+        #hidden-message {
+            background-color: #fff9fa;
+            border-left: 4px solid #d6336c;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            transition: opacity 0.5s;
+            text-align: left; /* Alinhado à esquerda para parecer uma carta */
+        }
+        
+        /* ESTILO DA FONTE PERSONALIZADA PARA A DECLARAÇÃO */
+        #hidden-message p {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6em; /* Tamanho maior para a fonte de mão */
+            line-height: 1.5;
+            color: #383838;
+            margin-bottom: 1em;
+        }
+        #hidden-message p:last-child {
+            margin-bottom: 0;
+        }
 
-        .exploding-heart {
-            position: fixed;
-            font-size: 2em;
-            z-index: 1000;
-            pointer-events: none;
-            opacity: 0;
-            transition: all 1s ease-out;
+        #hidden-message-button {
+            margin-top: 15px;
+            background-color: #884d60;
         }
     </style>
 </head>
@@ -147,8 +143,7 @@
         </div>
         <div class="content">
             <p>Para celebrar o nosso dia, fiz essa pequena surpresa para te lembrar o quanto você é especial para mim.</p>
-            <button id="surprise-button">Tenho uma surpresa para você...</button>
-            <p id="nervous-message">&nbsp;</p>
+            <button id="surprise-button">Clique para ver a surpresa...</button>
         </div>
         <div class="footer">
             Com muito carinho,<br>
@@ -160,100 +155,36 @@
         <div class="content">
             <h2>Você é a melhor parte do meu dia.</h2>
             <p>Obrigado por ser minha parceira, minha amiga e meu grande amor. Você é luz em meio a vastidão deste mundo, e perfume para os olhos e colírio para a alma hahaha desculpa estou nervoso 😂❤️</p>
-            <button id="back-button">Voltar</button>
+            
+            <button id="hidden-message-button">Uma última mensagem...</button>
+            <div id="hidden-message" class="hidden">
+                <p>
+                    Se me pedissem pra definir a gente com uma palavra, eu diria: parceria. Amadurecer ao seu lado tem sido a melhor parte, porque a gente aprendeu a ser time de verdade.
+                </p>
+                <p>
+                    Admiro a força que você tem e a leveza com que você encara a vida. Você me inspira todos os dias a ser um pouco melhor.
+                </p>
+                <p>
+                    Obrigado por ser minha dupla pra tudo, principalmente pra fazer comprinhas terceira vez na semana hahaha. Mal posso esperar por todos os próximos capítulos da nossa história.
+                </p>
+            </div>
+
+            <hr style="margin-top: 30px; border: 1px solid #fcefee;">
+            <button id="back-button">Voltar ao Início</button>
         </div>
     </div>
 
     <script>
         const surpriseButton = document.getElementById('surprise-button');
         const backButton = document.getElementById('back-button');
+        const hiddenMessageButton = document.getElementById('hidden-message-button');
         const screenOne = document.getElementById('screen-one');
         const screenTwo = document.getElementById('screen-two');
+        const hiddenMessage = document.getElementById('hidden-message');
         const heartContainer = document.querySelector('.heart-container');
-        const nervousMessage = document.getElementById('nervous-message');
 
         function createFloatingHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-            heart.style.setProperty('--random-x', Math.random() * 200 - 100 + 'px');
-            heartContainer.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 5000);
-        }
-        setInterval(createFloatingHeart, 300);
-
-        function triggerHeartExplosion() {
-            for (let i = 0; i < 30; i++) {
-                const heart = document.createElement('div');
-                heart.classList.add('exploding-heart');
-                heart.innerHTML = ['❤️', '💖', '💕', '💓'][Math.floor(Math.random() * 4)];
-                heart.style.top = '50vh';
-                heart.style.left = '50vw';
-                document.body.appendChild(heart);
-                setTimeout(() => {
-                    const angle = Math.random() * 2 * Math.PI;
-                    const radius = Math.random() * 400 + 100;
-                    const x = Math.cos(angle) * radius;
-                    const y = Math.sin(angle) * radius;
-                    heart.style.opacity = '1';
-                    heart.style.transform = `translate(${x}px, ${y}px) scale(0.5) rotate(${Math.random() * 720 - 360}deg)`;
-                    setTimeout(() => {
-                        heart.style.opacity = '0';
-                        setTimeout(() => heart.remove(), 1000);
-                    }, 800);
-                }, 10);
-            }
-        }
-
-        // LÓGICA CORRIGIDA E MAIS ROBUSTA
-        let clickCount = 0;
-        surpriseButton.addEventListener('click', () => {
-            if (surpriseButton.disabled) return; // Impede cliques múltiplos enquanto a animação ocorre
-
-            clickCount++;
-
-            if (clickCount === 1) {
-                // Primeiro clique: mostra a mensagem de nervoso e ela fica visível
-                surpriseButton.innerText = "Tente de novo...";
-                nervousMessage.innerText = "hmmm tente de novo, estou nervoso haha";
-                nervousMessage.classList.add('visible');
-
-            } else if (clickCount >= 2) {
-                // Segundo clique: dispara a mágica
-                surpriseButton.disabled = true; // Desabilita o botão
-                triggerHeartExplosion();
-
-                setTimeout(() => {
-                    screenOne.classList.add('fading-out');
-                    setTimeout(() => {
-                        screenOne.classList.add('hidden');
-                        screenTwo.classList.remove('hidden');
-                    }, 500);
-                }, 1200);
-            }
-        });
-
-        // Lógica do botão de voltar com reset completo
-        backButton.addEventListener('click', () => {
-            screenTwo.classList.add('fading-out');
-            setTimeout(() => {
-                screenTwo.classList.add('hidden');
-                screenOne.classList.remove('hidden');
-                
-                // Reseta a tela 1 para o estado inicial
-                setTimeout(() => {
-                    screenOne.classList.remove('fading-out');
-                    clickCount = 0;
-                    surpriseButton.disabled = false;
-                    surpriseButton.innerText = "Tenho uma surpresa para você...";
-                    nervousMessage.classList.remove('visible');
-                    nervousMessage.innerHTML = '&nbsp;'; // Esvazia a mensagem
-                }, 50);
-
-            }, 500);
-        });
-    </script>
-</body>
-</html>
+            heart.style.left = Math.random
