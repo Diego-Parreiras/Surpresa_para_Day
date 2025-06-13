@@ -68,9 +68,7 @@
             z-index: 2;
         }
 
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
         
         .fading-out {
             opacity: 0;
@@ -133,6 +131,39 @@
             margin-top: 15px;
             background-color: #884d60;
         }
+
+        /* NOVO: Estilo para a explosão de corações */
+        .exploding-heart {
+            position: fixed;
+            font-size: 2em;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 1s ease-out;
+        }
+
+        /* NOVO: Estilos para telas pequenas para evitar rolagem */
+        @media (max-height: 740px) {
+            .header img {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 10px;
+            }
+            h1 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+            .container {
+                padding: 20px 25px;
+            }
+            p {
+                font-size: 1em;
+                margin-bottom: 15px;
+            }
+            .footer {
+                margin-top: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -178,9 +209,7 @@
     </div>
 
     <script>
-        // LÓGICA REFEITA E SIMPLIFICADA
         document.addEventListener('DOMContentLoaded', function() {
-            // Seleciona todos os elementos depois que a página carregar
             const surpriseButton = document.getElementById('surprise-button');
             const backButton = document.getElementById('back-button');
             const hiddenMessageButton = document.getElementById('hidden-message-button');
@@ -189,9 +218,8 @@
             const hiddenMessage = document.getElementById('hidden-message');
             const heartContainer = document.querySelector('.heart-container');
 
-            // Corações flutuando no fundo
             function createFloatingHeart() {
-                if (!document.hidden) { // Não cria corações se a aba estiver inativa
+                if (!document.hidden) {
                     const heart = document.createElement('div');
                     heart.classList.add('heart');
                     heart.innerHTML = '❤️';
@@ -199,30 +227,56 @@
                     heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
                     heart.style.setProperty('--random-x', (Math.random() * 200 - 100) + 'px');
                     heartContainer.appendChild(heart);
-                    setTimeout(() => {
-                        heart.remove();
-                    }, 5000);
+                    setTimeout(() => { heart.remove(); }, 5000);
                 }
             }
             
-            // Verifica se os elementos existem antes de adicionar eventos
+            // NOVO: Função para a explosão de corações
+            function triggerHeartExplosion() {
+                for (let i = 0; i < 30; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('exploding-heart');
+                    heart.innerHTML = ['❤️', '💖', '💕', '💓'][Math.floor(Math.random() * 4)];
+                    heart.style.top = '50vh';
+                    heart.style.left = '50vw';
+                    document.body.appendChild(heart);
+                    setTimeout(() => {
+                        const angle = Math.random() * 2 * Math.PI;
+                        const radius = Math.random() * 400 + 100;
+                        const x = Math.cos(angle) * radius;
+                        const y = Math.sin(angle) * radius;
+                        heart.style.opacity = '1';
+                        heart.style.transform = `translate(${x}px, ${y}px) scale(0.5) rotate(${Math.random() * 720 - 360}deg)`;
+                        setTimeout(() => {
+                            heart.style.opacity = '0';
+                            setTimeout(() => heart.remove(), 1000);
+                        }, 800);
+                    }, 10);
+                }
+            }
+
             if (surpriseButton) {
                 surpriseButton.addEventListener('click', () => {
-                    screenOne.classList.add('fading-out');
+                    if(surpriseButton.disabled) return;
+                    
+                    surpriseButton.disabled = true; // Desabilita para evitar múltiplos cliques
+                    triggerHeartExplosion(); // Chama a explosão
+
+                    // Espera a explosão acontecer antes de trocar de tela
                     setTimeout(() => {
-                        screenOne.classList.add('hidden');
-                        screenTwo.classList.remove('hidden');
-                        // Garante que a tela 2 não esteja com fading-out
-                        screenTwo.classList.remove('fading-out');
-                    }, 500);
+                        screenOne.classList.add('fading-out');
+                        setTimeout(() => {
+                            screenOne.classList.add('hidden');
+                            screenTwo.classList.remove('hidden');
+                            screenTwo.classList.remove('fading-out');
+                        }, 500); // Tempo para o fade-out
+                    }, 1200); // Espera 1.2 segundos (tempo da explosão)
                 });
             }
 
             if (hiddenMessageButton) {
                 hiddenMessageButton.addEventListener('click', () => {
-                    if (hiddenMessage) {
-                        hiddenMessage.classList.remove('hidden');
-                    }
+                    hiddenMessage.classList.remove('hidden');
                     hiddenMessageButton.classList.add('hidden');
                 });
             }
@@ -233,22 +287,16 @@
                     setTimeout(() => {
                         screenTwo.classList.add('hidden');
                         screenOne.classList.remove('hidden');
-                        // Reseta a tela 1 para o estado inicial
                         setTimeout(() => {
                             screenOne.classList.remove('fading-out');
-                            // Reseta a tela 2 para o próximo uso
-                            if (hiddenMessage) {
-                                hiddenMessage.classList.add('hidden');
-                            }
-                            if (hiddenMessageButton) {
-                                hiddenMessageButton.classList.remove('hidden');
-                            }
+                            hiddenMessage.classList.add('hidden');
+                            hiddenMessageButton.classList.remove('hidden');
+                            surpriseButton.disabled = false; // Reabilita o botão principal
                         }, 50);
                     }, 500);
                 });
             }
-
-            // Inicia os corações flutuantes
+            
             setInterval(createFloatingHeart, 300);
         });
     </script>
