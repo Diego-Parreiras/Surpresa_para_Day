@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para minha Day❤️</title>
+    <title>Para minha querida Day ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Mulish:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS com as correções de centralização e responsividade */
+        /* CSS com todas as correções */
         body {
             margin: 0;
             font-family: 'Mulish', sans-serif;
@@ -61,12 +61,11 @@
             text-align: center;
             transition: opacity 0.5s, transform 0.5s;
             position: relative;
-            z-index: 2; /* Aumentado para ficar na frente do overlay */
+            z-index: 2;
         }
 
-        /* Classes para controlar a visibilidade das telas */
         .hidden {
-            display: none !important; /* Usando !important para garantir a sobreposição */
+            display: none !important;
         }
         
         .fading-out {
@@ -75,12 +74,12 @@
         }
 
         .header img {
-            width: 130px;
-            height: 130px;
+            width: 130px; /* Tamanho corrigido */
+            height: 130px; /* Tamanho corrigido */
             border-radius: 50%;
             border: 5px solid #fff;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            object-fit: contain;
+            object-fit: contain; /* Correção para não cortar */
             background-color: #fff;
             margin-bottom: 20px;
         }
@@ -94,12 +93,15 @@
         h2 { font-size: 1.8em; margin-top: 30px; margin-bottom: 15px; }
         p { line-height: 1.6; font-size: 1.1em; margin-bottom: 20px; }
         
-        /* Estilo para a mensagem de "nervoso" */
         #nervous-message {
             color: #d6336c;
             font-style: italic;
-            height: 20px; /* Garante um espaço fixo para não "pular" o layout */
-            transition: opacity 0.3s;
+            min-height: 1.5em; /* CORREÇÃO: Permite que o texto cresça */
+            transition: opacity 0.5s;
+            opacity: 0; /* Começa invisível */
+        }
+        #nervous-message.visible {
+            opacity: 1; /* Fica visível com a classe */
         }
 
         button {
@@ -124,14 +126,13 @@
         .footer strong { color: #d6336c; }
         #back-button { margin-top: 30px; }
 
-        /* Estilo para a explosão de corações */
         .exploding-heart {
             position: fixed;
-            font-size: 2em; /* Corações maiores para a explosão */
+            font-size: 2em;
             z-index: 1000;
             pointer-events: none;
             opacity: 0;
-            transition: all 1s ease-out; /* Animação suave para fora */
+            transition: all 1s ease-out;
         }
     </style>
 </head>
@@ -164,7 +165,6 @@
     </div>
 
     <script>
-        // Lógica de Backend no Frontend :)
         const surpriseButton = document.getElementById('surprise-button');
         const backButton = document.getElementById('back-button');
         const screenOne = document.getElementById('screen-one');
@@ -172,7 +172,6 @@
         const heartContainer = document.querySelector('.heart-container');
         const nervousMessage = document.getElementById('nervous-message');
 
-        // Mantém os corações flutuando no fundo
         function createFloatingHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -183,33 +182,23 @@
             heartContainer.appendChild(heart);
             setTimeout(() => { heart.remove(); }, 5000);
         }
-        const floatingHeartInterval = setInterval(createFloatingHeart, 300);
+        setInterval(createFloatingHeart, 300);
 
-        // NOVO: Função para a explosão de corações
         function triggerHeartExplosion() {
-            for (let i = 0; i < 30; i++) { // Cria 30 corações para a explosão
+            for (let i = 0; i < 30; i++) {
                 const heart = document.createElement('div');
                 heart.classList.add('exploding-heart');
                 heart.innerHTML = ['❤️', '💖', '💕', '💓'][Math.floor(Math.random() * 4)];
-                
-                // Posição inicial no centro da tela
                 heart.style.top = '50vh';
                 heart.style.left = '50vw';
-
                 document.body.appendChild(heart);
-
-                // Força o navegador a aplicar o estilo inicial antes de animar
                 setTimeout(() => {
-                    // Posição final aleatória
                     const angle = Math.random() * 2 * Math.PI;
                     const radius = Math.random() * 400 + 100;
                     const x = Math.cos(angle) * radius;
                     const y = Math.sin(angle) * radius;
-
                     heart.style.opacity = '1';
                     heart.style.transform = `translate(${x}px, ${y}px) scale(0.5) rotate(${Math.random() * 720 - 360}deg)`;
-                    
-                    // Desaparece e remove o coração depois da animação
                     setTimeout(() => {
                         heart.style.opacity = '0';
                         setTimeout(() => heart.remove(), 1000);
@@ -218,40 +207,35 @@
             }
         }
 
-        // NOVO: Lógica de clique duplo
+        // LÓGICA CORRIGIDA E MAIS ROBUSTA
         let clickCount = 0;
         surpriseButton.addEventListener('click', () => {
+            if (surpriseButton.disabled) return; // Impede cliques múltiplos enquanto a animação ocorre
+
             clickCount++;
 
             if (clickCount === 1) {
-                // Primeiro clique
-                nervousMessage.innerText = "hmmm tente de novo, estou nervoso haha";
+                // Primeiro clique: mostra a mensagem de nervoso e ela fica visível
                 surpriseButton.innerText = "Tente de novo...";
-                
-                setTimeout(() => {
-                    nervousMessage.innerText = "";
-                     surpriseButton.innerText = "Tenho uma surpresa para você...";
-                }, 2500); // A mensagem some depois de 2.5 segundos
+                nervousMessage.innerText = "hmmm tente de novo, estou nervoso haha";
+                nervousMessage.classList.add('visible');
 
             } else if (clickCount >= 2) {
-                // Segundo clique (ou mais)
-                triggerHeartExplosion(); // Chama a explosão
+                // Segundo clique: dispara a mágica
+                surpriseButton.disabled = true; // Desabilita o botão
+                triggerHeartExplosion();
 
-                // Desabilita o botão para não clicar de novo
-                surpriseButton.disabled = true;
-
-                // Espera a explosão acontecer antes de trocar de tela
                 setTimeout(() => {
                     screenOne.classList.add('fading-out');
                     setTimeout(() => {
                         screenOne.classList.add('hidden');
                         screenTwo.classList.remove('hidden');
-                    }, 500); // Tempo para o fade-out
-                }, 1200); // Espera 1.2 segundos (tempo da explosão)
+                    }, 500);
+                }, 1200);
             }
         });
 
-        // Lógica do botão de voltar (sem alterações)
+        // Lógica do botão de voltar com reset completo
         backButton.addEventListener('click', () => {
             screenTwo.classList.add('fading-out');
             setTimeout(() => {
@@ -259,10 +243,15 @@
                 screenOne.classList.remove('hidden');
                 
                 // Reseta a tela 1 para o estado inicial
-                screenOne.classList.remove('fading-out');
-                clickCount = 0; // Reseta a contagem de cliques
-                surpriseButton.disabled = false; // Habilita o botão novamente
-                surpriseButton.innerText = "Tenho uma surpresa para você...";
+                setTimeout(() => {
+                    screenOne.classList.remove('fading-out');
+                    clickCount = 0;
+                    surpriseButton.disabled = false;
+                    surpriseButton.innerText = "Tenho uma surpresa para você...";
+                    nervousMessage.classList.remove('visible');
+                    nervousMessage.innerHTML = '&nbsp;'; // Esvazia a mensagem
+                }, 50);
+
             }, 500);
         });
     </script>
